@@ -1,0 +1,5 @@
+flask>=3.0.0
+anthropic>=0.25.0
+playwright>=1.44.0
+reportlab>=4.0.0
+gunicorn>=21.2.0
