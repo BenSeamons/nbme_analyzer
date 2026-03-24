@@ -82,6 +82,7 @@ def scrape_incorrect_items(url: str) -> tuple[list[dict], dict]:
         # ── iterate through incorrect questions ────────────────────────────
         q_number = 0
         max_questions = 60  # safety cap
+        empty_fetches = 0
 
         while q_number < max_questions:
             page.wait_for_timeout(800)
@@ -106,9 +107,14 @@ def scrape_incorrect_items(url: str) -> tuple[list[dict], dict]:
                 question_data["question_number"] = current_q
                 misses.append(question_data)
                 q_number += 1
+                empty_fetches = 0
             else:
-                # might be back on score report page = done
-                break
+                empty_fetches += 1
+                if empty_fetches >= 3:
+                    # definitively failed to find question 3 times = done
+                    break
+                page.wait_for_timeout(2000)
+                continue
 
             # check if there's a Next button to click
             next_clicked = False
