@@ -175,8 +175,8 @@ def analyze():
     data = request.get_json()
     url  = data.get("url", "").strip()
 
-    if not url or "starttest.com" not in url:
-        return jsonify({"error": "Please paste a valid NBME score report URL."}), 400
+    if not url or ("starttest.com" not in url and "amazonaws.com" not in url):
+        return jsonify({"error": "Please paste a valid NBME score report URL (starttest.com or amazonaws.com)."}), 400
 
     try:
         misses, meta = scrape_incorrect_items(url)
